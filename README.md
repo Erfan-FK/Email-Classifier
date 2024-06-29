@@ -59,7 +59,7 @@ Where:
   
 ### Gaussian Naive Bayes
 In Gaussian Naive Bayes, the continuous values associated with each class are assumed to be distributed according to a Gaussian (normal) distribution. The probability is given by:
-$$\[ P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} \exp \left( -\frac{(x_i - \mu_y)^2}{2\sigma_y^2} \right) \]$$
+$$\ P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} \exp \left( -\frac{(x_i - \mu_y)^2}{2\sigma_y^2} \right) \$$
 A small epsilon value is added to the variance to prevent division by zero.
 
 Where:
@@ -78,35 +78,32 @@ Where:
 The implementation of the Gaussian Naive Bayes model can be found in the file:
 - [gaussianNB.py](models/gaussianNB.py)
 
-### Binomial Naive Bayes
-In Binomial Naive Bayes, the features are assumed to be binary (word present or not). The probability is given by:
-$$\[ P(x_i|y) = \frac{(n_{y,x_i} + \alpha)}{(n_y + \alpha N)} \]$$
+### Multinomial Naive Bayes
+In Multinomial Naive Bayes, the features are assumed to be generated from a multinomial distribution. The probability is given by:
+$$\ P(x_i \mid y) = \frac{{\text{count}(x_i, y) + \alpha}}{{\sum_{x'} \left( \text{count}(x', y) + \alpha \right)}} \$$
 
 Where:
-- $\( x_i \$): The $\(i\$)-th feature (e.g., the presence or absence of a specific word).
-- $\( y \$): The class label (e.g., spam or ham).
-- $\( n_{y,x_i} \$): The number of occurrences of feature $\( x_i \$) in class $\( y \$).
-- $\( n_y \$): The total number of occurrences of all features in class $\( y \$).
-- $\( \alpha \$): The Laplace smoothing parameter is used to prevent division by zero.
-- $\( N \$): The total number of features.
+- $\( x_i \$): The count or frequency of the $\( i \$)-th feature.
+- $\( y \$): The class label.
+- $\( \text{count}(x_i, y) \$): The count of feature $\( x_i \$) in documents of class $\( y \$).
+- $\( \sum_{x'} \left( \text{count}(x', y) + \alpha \right) \$): The total count of all features in class $\( y \$), plus $\( \alpha \$) times the number of possible features, to account for Laplace smoothing.
+- $\( \alpha \$): Laplace smoothing parameter, typically set to 1.
 
 **Explanation of Terms:**
-- **$\( n_{y,x_i} \$)**: The count of how many times the feature $\( x_i \$) appears in emails of class $\( y \$).
-- **$\( n_y \$)**: The total count of all features in emails of class $\( y \$). It represents the sum of occurrences of all features for a particular class.
-- **Laplace Smoothing ($\(\alpha\$))**: A technique used to handle zero probabilities by adding a constant (usually 1) to the counts. This ensures that no probability is ever zero.
-- **Total Number of Features ($\( N \$))**: The total number of unique features (e.g., unique words) across all classes.
+- **Count ($\( \text{count}(x_i, y) \$))**: The number of times feature $\( x_i \$) appears in documents of class $\( y \$).
+- **Laplace Smoothing ($\( \alpha \$))**: A smoothing parameter added to avoid zero probabilities when a feature doesn't appear in the training set for a particular class.
   
-The implementation of the Binomial Naive Bayes model can be found in the file:
-- [binomialNB.py](models/binomialNB.py)
-
+The implementation of the Multinomial Naive Bayes model can be found in the file:
+- [multinomialNB.py](models/multinomialNB.py)
+  
 ### Text Vectorization
 The Count Vectorizer from the `sklearn` library was used to transform text into numerical vectors. This process converts the processed emails into a matrix of token counts, which can then be used as input for the Naive Bayes models.
 
 ### Model Performance
 1. **Gaussian Naive Bayes**: Accuracy - 0.595
-2. **Binomial Naive Bayes**: Accuracy - 0.962
+2. **Multinomial Naive Bayes**: Accuracy - 0.962
 
-The Binomial Naive Bayes performed better and was chosen as the final model.
+The Multinomial Naive Bayes performed better and was chosen as the final model.
 
 ## Usage
 
