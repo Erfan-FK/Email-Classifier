@@ -56,7 +56,15 @@ Where:
 - **Likelihood ($\( P(B|A) \$))**: The probability of the feature given the class.
 - **Prior Probability ($\( P(A) \$))**: The initial probability of the class before observing the feature.
 - **Prior Probability of the Feature ($\( P(B) \$))**: The initial probability of the feature.
-  
+
+### Joint Probability in Both Models
+Given the feature independence assumption, the joint probability of observing a feature vector $\( \mathbf{x} \$) given a class $\( y \$) is the product of the individual feature probabilities:
+$$\ P(\mathbf{x} \mid y) = \prod_{i=1}^n P(x_i \mid y) \$$
+
+### Log Transformation for Numerical Stability
+To avoid numerical underflow when dealing with very small probabilities, the calculations are usually done in log space:
+$$\ \log P(\mathbf{x} \mid y) = \sum_{i=1}^n \log P(x_i \mid y) \$$
+
 ### Gaussian Naive Bayes
 In Gaussian Naive Bayes, the continuous values associated with each class are assumed to be distributed according to a Gaussian (normal) distribution. The probability is given by:
 $$\ P(x_i|y) = \frac{1}{\sqrt{2\pi\sigma_y^2}} \exp \left( -\frac{(x_i - \mu_y)^2}{2\sigma_y^2} \right) \$$
