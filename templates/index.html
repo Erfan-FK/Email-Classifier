@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
+</head>
+<body>
+<div class="text-input">
+    <input type="text" id="input1" placeholder="...">
+    <label for="input1">Email</label>
+</div>
+<div id="result"></div>
+<script>
+    document.getElementById('input1').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            var text = e.target.value;
+            fetch('/classify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'text=' + encodeURIComponent(text),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    var resultDiv = document.getElementById('result');
+                    if (data.result === 0) {
+                        resultDiv.innerHTML = 'Ham';
+                        resultDiv.style.color = '#0EAD69';
+                    } else {
+                        resultDiv.innerHTML = 'Spam';
+                        resultDiv.style.color = '#EF233C';
+                    }
+                    resultDiv.style.fontWeight = 'bold';
+                    resultDiv.style.fontSize = '5em';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    });
+</script>
+</body>
+</html>
